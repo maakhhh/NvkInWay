@@ -11,7 +11,7 @@ namespace NvkInWay.Api.V1.Controllers;
 public class UserController(IMediator mediator, IMapper mapper, ILogger<UserController> logger)
 {
     [HttpPost("register")]
-    public async Task<ActionResult<V1UserDto>> Register([FromBody] V1RegisterUserDto request)
+    public async Task<ActionResult<V1UserDto>> RegisterAsync([FromBody] V1RegisterUserDto request)
     {
         var command = new RegisterCommand(request.Email, request.FirstName, 
             request.SecondName, request.Password, request.Age);

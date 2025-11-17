@@ -42,13 +42,12 @@ public sealed class AuthController : ControllerBase
     }
 
     [HttpPost("refresh")]
-    public async Task<ActionResult> Refresh()
+    public async Task<ActionResult> Refresh(V1RefreshTokenDto dto)
     {
-        var deviceId = Request.Headers["X-Device-Id"].FirstOrDefault();
-        var authorizationHeader = Request.Headers["Authorization"].FirstOrDefault();
-        var refreshToken = Request.Headers["X-Refresh-Token"].FirstOrDefault();
+        var accessToken = dto.AccessToken.Replace("Bearer ", "");
+        var tokens = await authService.RefreshTokenAsync(accessToken, dto.RefreshToken, dto.DeviceId);
 
-        throw new NotImplementedException();
+        return Ok(tokens);
     }
 
     [HttpPost("logout")]

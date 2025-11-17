@@ -91,17 +91,14 @@ internal sealed class AuthService : IAuthService
         }
     }
 
-    public async Task<JwtTokens> RefreshTokenAsync(string accessToken, string refreshToken, string deviceId)
+    public async Task<JwtTokens> RefreshTokenAsync(string? accessToken, string? refreshToken, string? deviceId)
     {
-        if (string.IsNullOrWhiteSpace(accessToken))
-            throw new ArgumentException("Access token cannot be empty", nameof(accessToken));
-        if (string.IsNullOrWhiteSpace(refreshToken))
-            throw new ArgumentException("Refresh token cannot be empty", nameof(refreshToken));
-        if (string.IsNullOrWhiteSpace(deviceId))
-            throw new ArgumentException("Device ID cannot be empty", nameof(deviceId));
-
         try
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(accessToken, nameof(accessToken));
+            ArgumentException.ThrowIfNullOrWhiteSpace(refreshToken, nameof(refreshToken));
+            ArgumentException.ThrowIfNullOrWhiteSpace(deviceId, nameof(deviceId));
+            
             var principal = jwtService.GetPrincipalFromExpiredToken(accessToken);
             if (principal == null)
             {
