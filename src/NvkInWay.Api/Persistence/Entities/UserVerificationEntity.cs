@@ -14,8 +14,6 @@ public sealed class UserVerificationEntity : EntityBase
 
     public required string UnconfirmedEmailCode { get; set; }
     
-    public string? VerificationCode { get; set; }
-
     public DateTimeOffset? LastVerificationAt { get; set; }
     
     public UserEntity User { get; set; } = null!;

@@ -317,6 +317,7 @@ internal sealed class AuthService : IAuthService
         if(sendingResult == false)
             throw new ApplicationException("Email sending failed");
         
+        await userVerificationRepository.SetUsersCodesNotActualAsync(user.Id, cancellationToken);
         await userVerificationRepository
             .CreateNewVerificationCodeAsync(user, expiresAt, verificationCode, cancellationToken);
         
@@ -328,13 +329,13 @@ internal sealed class AuthService : IAuthService
     {
         var user = await userRepository.GetByEmailAsync(email);
 
-        if (await userVerificationRepository
+        if (!await userVerificationRepository
                 .VerificationPassedCheckAsync(user.Id, code, emailVerificationOptions.Value.VerificationTimeout))
         {
-            user.IsVerified = true;
-            await userVerificationRepository.SetUsersCodesNotActualAsync(user.Id);
+            throw new ApplicationException("Email not verified");
         }
-
+        
+        await userVerificationRepository.SetUsersCodesNotActualAsync(user.Id);
         user.IsVerified = true;
         await userRepository.UpdateUserAsync(user);
         

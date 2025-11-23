@@ -10,7 +10,7 @@ public class RegisterCommandHandler(
     ILogger<RegisterCommandHandler> logger) 
     : IRequestHandler<RegisterCommand, Domain.User>
 {
-    public Task<Domain.User> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Domain.User> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var user = new Domain.User
         {
@@ -22,7 +22,7 @@ public class RegisterCommandHandler(
             CreatedAt = DateTimeOffset.Now
         };
 
-        var createdUser = userRepository.CreateUserAsync(user, cancellationToken);
+        var createdUser = await userRepository.CreateUserAsync(user, cancellationToken);
         logger.LogInformation("Created user: {UserId}", user.Id);
 
         return createdUser;

@@ -30,7 +30,7 @@ internal sealed class UserVerificationRepository(ApplicationContext applicationC
             .Where(x => x.UserId == userId)
             .OrderByDescending(x => x.VerificationCodeCreatedAt)
             .Select(x => x.VerificationCodeCreatedAt)
-            .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken: cancellationToken);
     }
 
     public async Task<bool> ActualVerificationCodeExistsAsync(long userId, string code,
@@ -39,7 +39,8 @@ internal sealed class UserVerificationRepository(ApplicationContext applicationC
         var hashedCode = passwordHasher.HashPassword(code);
 
         var entity = await applicationContext.Verifications
-            .Where(x => x.UserId == userId && x.VerificationCode == hashedCode)
+            .Where(x => x.UserId == userId && x.UnconfirmedEmailCode == hashedCode 
+                                           && x.NotActual == false)
             .OrderByDescending(x => x.VerificationCodeCreatedAt)
             .SingleOrDefaultAsync(cancellationToken);
         
@@ -49,11 +50,9 @@ internal sealed class UserVerificationRepository(ApplicationContext applicationC
     public async Task<bool> VerificationPassedCheckAsync(long userId, string code, TimeSpan verificationTimeout,
         CancellationToken cancellationToken = default)
     {
-        var hashedCode = passwordHasher.HashPassword(code);
-        
         var actualVerificationEntity = await applicationContext.Verifications
             .Where(x => x.UserId == userId 
-                        && x.VerificationCodeExpiredAt <= DateTimeOffset.UtcNow
+                        && x.VerificationCodeExpiredAt > DateTimeOffset.UtcNow
                         && x.NotActual == false)
             .OrderByDescending(x => x.VerificationCodeCreatedAt)
             .SingleOrDefaultAsync(cancellationToken);
@@ -68,7 +67,7 @@ internal sealed class UserVerificationRepository(ApplicationContext applicationC
         actualVerificationEntity.LastVerificationAt = DateTimeOffset.UtcNow;
         await applicationContext.SaveChangesAsync(cancellationToken);
         
-        return actualVerificationEntity.VerificationCode == hashedCode;
+        return passwordHasher.VerifyPassword(code, actualVerificationEntity.UnconfirmedEmailCode);
     }
 
     public async Task CreateNewVerificationCodeAsync(User user, DateTimeOffset expiration, string code, 
@@ -79,7 +78,7 @@ internal sealed class UserVerificationRepository(ApplicationContext applicationC
             .ExecuteUpdateAsync(x =>
                 x.SetProperty(s => s.NotActual, true), cancellationToken);
         
-        var entity = new UserVerificationEntity()
+        var entity = new UserVerificationEntity
         {
             UserId = user.Id,
             UnconfirmedEmail = user.Email,

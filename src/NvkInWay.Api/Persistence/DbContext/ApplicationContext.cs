@@ -102,8 +102,7 @@ internal sealed class ApplicationContext : Microsoft.EntityFrameworkCore.DbConte
             entity.HasKey(u => u.Id);
 
             entity.Property(v => v.UnconfirmedEmail).HasMaxLength(100);
-            entity.Property(v => v.UnconfirmedEmailCode).HasMaxLength(10);
-            entity.Property(v => v.VerificationCode).HasMaxLength(10);
+            entity.Property(v => v.UnconfirmedEmailCode).HasMaxLength(64);
 
             entity.HasOne(v => v.User)
                 .WithMany();
