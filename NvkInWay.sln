@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{0E4B29B5-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NvkInWay.MediatR", "src\NvkInWay.MediatR\NvkInWay.MediatR.csproj", "{6DBE5CB1-1752-4FE6-BC09-3211097E89E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NvkInWay.Infrastructure", "src\NvkInWay.Infrastructure\NvkInWay.Infrastructure.csproj", "{2651EFD8-7D29-4A44-B368-CB4BAE66A00F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,7 @@ Global
 		{0E4B29B5-CB65-4904-B8A4-A0BA3BA50278} = {1CC85603-CA9E-4A82-A53D-D483D3243A89}
 		{2BA63273-EA22-47D9-A146-D4FAA8F1A836} = {0E4B29B5-CB65-4904-B8A4-A0BA3BA50278}
 		{6DBE5CB1-1752-4FE6-BC09-3211097E89E2} = {781975D5-F468-48C5-A23E-722F8ACCF23D}
+		{2651EFD8-7D29-4A44-B368-CB4BAE66A00F} = {781975D5-F468-48C5-A23E-722F8ACCF23D}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2BA63273-EA22-47D9-A146-D4FAA8F1A836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -32,5 +35,9 @@ Global
 		{6DBE5CB1-1752-4FE6-BC09-3211097E89E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DBE5CB1-1752-4FE6-BC09-3211097E89E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DBE5CB1-1752-4FE6-BC09-3211097E89E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2651EFD8-7D29-4A44-B368-CB4BAE66A00F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2651EFD8-7D29-4A44-B368-CB4BAE66A00F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2651EFD8-7D29-4A44-B368-CB4BAE66A00F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2651EFD8-7D29-4A44-B368-CB4BAE66A00F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
