@@ -7,8 +7,9 @@ using NvkInWay.Api.V1.Models;
 namespace NvkInWay.Api.V1.Controllers;
 
 [ApiController]
-[Route("api/v1/user")]
-public class UserController(IMediator mediator, IMapper mapper, ILogger<UserController> logger)
+[Route("api/v1/[controller]")]
+public class UserController(IMediator mediator, IMapper mapper, ILogger<UserController> logger) 
+    : ControllerBase
 {
     [HttpPost("register")]
     public async Task<ActionResult<V1UserDto>> RegisterAsync([FromBody] V1RegisterUserDto request)

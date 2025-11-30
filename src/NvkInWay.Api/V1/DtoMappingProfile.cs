@@ -9,5 +9,7 @@ public class DtoMappingProfile : Profile
     public DtoMappingProfile()
     {
         CreateMap<User, V1UserDto>();
+        CreateMap<Trip, V1TripDto>();
+        CreateMap<V1CreateTripDto, Trip>();
     }
 }

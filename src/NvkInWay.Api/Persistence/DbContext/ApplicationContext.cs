@@ -12,7 +12,8 @@ internal sealed class ApplicationContext : Microsoft.EntityFrameworkCore.DbConte
     public DbSet<UserVerificationEntity> Verifications => Set<UserVerificationEntity>();
     
     public DbSet<UserEntity> Users => Set<UserEntity>();
-    public DbSet<DriveEntity> Drives => Set<DriveEntity>();
+    public DbSet<TripEntity> Trips => Set<TripEntity>();
+    public DbSet<TripPassengerEntity> TripPassengers => Set<TripPassengerEntity>();
     
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
@@ -81,20 +82,32 @@ internal sealed class ApplicationContext : Microsoft.EntityFrameworkCore.DbConte
             entity.Property(u => u.Age).IsRequired();
         });
 
-        modelBuilder.Entity<DriveEntity>(entity =>
+        modelBuilder.Entity<TripEntity>(entity =>
         {
-            entity.HasKey(d => d.Id);
+            entity.HasKey(t => t.Id);
             
-            entity.Property(u => u.From).IsRequired().HasMaxLength(200);
-            entity.Property(u => u.To).IsRequired().HasMaxLength(200);
-            entity.Property(u => u.Start).IsRequired();
-            entity.Property(u => u.End).IsRequired();
+            entity.Property(t => t.StartPlace).HasMaxLength(200);
+            entity.Property(t => t.EndPlace).HasMaxLength(200);
+            entity.Property(t => t.Description).HasMaxLength(1000);
+            entity.Property(t => t.CarModel).HasMaxLength(200);
+            entity.Property(t => t.CarNumber).HasMaxLength(10);
 
-            entity.HasOne(d => d.Driver)
-                .WithMany();
+            entity.HasOne(t => t.Creator)
+                .WithMany()
+                .HasForeignKey(t => t.CreatorId);
+        });
 
-            entity.HasMany(d => d.Passengers)
-                .WithMany();
+        modelBuilder.Entity<TripPassengerEntity>(entity =>
+        {
+            entity.HasKey(p => p.Id);
+
+            entity.HasOne(p => p.Trip)
+                .WithMany()
+                .HasForeignKey(p => p.TripId);
+
+            entity.HasOne(p => p.Passenger)
+                .WithMany()
+                .HasForeignKey(p => p.PassengerId);
         });
 
         modelBuilder.Entity<UserVerificationEntity>(entity =>

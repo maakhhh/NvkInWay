@@ -14,5 +14,9 @@ public class MappingProfile : Profile
         CreateMap<RefreshTokenEntity, RefreshToken>();
         CreateMap<UserSession, UserSessionsEntity>();
         CreateMap<UserSessionsEntity, UserSession>();
+        CreateMap<Trip, TripEntity>();
+        CreateMap<TripEntity, Trip>();
+        CreateMap<TripPassenger, TripPassengerEntity>();
+        CreateMap<TripPassengerEntity, TripPassenger>();
     }
 }

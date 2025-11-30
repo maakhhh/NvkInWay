@@ -10,7 +10,7 @@ using NvkInWay.Api.V1.Models;
 namespace NvkInWay.Api.V1.Controllers;
 
 [ApiController]
-[Route("api/v1/auth")]
+[Route("api/v1/[controller]")]
 public sealed class AuthController(IAuthService authService, ILogger<AuthController> logger)
     : ControllerBase
 {
@@ -20,18 +20,16 @@ public sealed class AuthController(IAuthService authService, ILogger<AuthControl
     {
         var result = await authService.ConfirmEmailAsync(request.Email, request.ConfirmationCode);
 
-        if (result.HasError)
-        {
-            var error = result.ErrorOrDefault()!;
-            
-            return BadRequest(new ErrorResponse()
-            {
-                Error = error.Id,
-                Message = error.Message
-            });
-        }
+        if (!result.HasError) 
+            return NoContent();
         
-        return NoContent();
+        var error = result.ErrorOrDefault()!;
+            
+        return BadRequest(new ErrorResponse
+        {
+            Error = error.Id,
+            Message = error.Message
+        });
     }
     
     [Authorize]
