@@ -45,7 +45,6 @@ internal sealed class TripService(
         var trip = mapper.Map<Trip>(tripRequest);
         
         trip.CreatorId = user.Id;
-        trip.Creator = user;
         trip.CreatedAt = DateTimeOffset.Now;
         trip.UpdatedAt = DateTimeOffset.Now;
         
